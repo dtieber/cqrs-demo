@@ -25,5 +25,13 @@
     "lint-staged": "^10.5.1",
     "prettier": "^2.1.2",
     "typescript": "^4.0.5"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "**/*": "npm run lint"
   }
 }
