@@ -35,7 +35,7 @@
     }
   },
   "lint-staged": {
-    "**/*": "npm run lint"
+    "**/*.ts": "npm run lint"
   },
   "dependencies": {
     "fastify": "^3.7.0"
