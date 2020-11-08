@@ -1,0 +1,13 @@
+{
+  "name": "cqrs-demo",
+  "version": "1.0.0",
+  "description": "1.0.0",
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dtieber/cqrs-demo.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
