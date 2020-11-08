@@ -1,10 +1,10 @@
 import fastify from 'fastify'
 
+import { routes as healthRoutes } from './health/health.routes'
+
 const server = fastify()
 
-server.get('/health', async (request, reply) => {
-  return {}
-})
+server.register(healthRoutes)
 
 server.listen(3366, (err, address) => {
   if(err) {
