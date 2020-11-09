@@ -7,7 +7,7 @@ const server = fastify()
 server.register(healthRoutes)
 
 server.listen(3366, (err, address) => {
-  if(err) {
+  if (err) {
     console.error(err)
     process.exit(1)
   }
