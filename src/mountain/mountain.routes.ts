@@ -7,6 +7,10 @@ import {
 } from 'fastify'
 import * as mountainService from './mountain.service'
 
+import { TaskRunner } from '../lib/task-runner.service'
+
+const runner = new TaskRunner()
+
 export const routes = fp(
   async (fastify: FastifyInstance, options: FastifyPluginOptions) => {
     fastify.get(
