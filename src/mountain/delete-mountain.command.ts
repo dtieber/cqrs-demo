@@ -1,3 +1,5 @@
+import Debug from 'debug'
+
 import * as mountainService from './mountain.service'
 import { CommandHandler, CommandTask } from '../lib/task.model'
 
@@ -16,18 +18,20 @@ export const DeleteMountainCommand = (
 
 export class DeleteMountainCommandHandler implements CommandHandler {
   task: DeleteMountainCommand
+  logger
 
   constructor(task: DeleteMountainCommand) {
     this.task = task
+    this.logger = Debug('DeleteMountainCommandHandler')
   }
 
   runCommand() {
-    console.log(`Delete '${this.task.name}', request id: ${this.task.id}`)
+    this.logger(`Delete '${this.task.name}', request id: ${this.task.id}`)
     const deleted = mountainService.remove(this.task.name)
     if (deleted) {
-      console.log(`Mountain deleted successfully, request id: ${this.task.id}`)
+      this.logger(`Mountain deleted successfully, request id: ${this.task.id}`)
     } else {
-      console.log(`Mountain was not deleted, request id: ${this.task.id}`)
+      this.logger(`Mountain was not deleted, request id: ${this.task.id}`)
     }
     return Promise.resolve()
   }

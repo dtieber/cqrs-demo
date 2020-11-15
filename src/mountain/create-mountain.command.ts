@@ -1,3 +1,5 @@
+import Debug from 'debug'
+
 import * as mountainService from './mountain.service'
 import { CommandHandler, CommandTask } from '../lib/task.model'
 
@@ -16,18 +18,20 @@ export const CreateMountainCommand = (
 
 export class CreateMountainCommandHandler implements CommandHandler {
   task: CreateMountainCommand
+  logger
 
   constructor(task: CreateMountainCommand) {
     this.task = task
+    this.logger = Debug('CreateMountainCommandHandler')
   }
 
   runCommand() {
-    console.log(`Create '${this.task.name}', request id: ${this.task.id}`)
+    this.logger(`Create '${this.task.name}', request id: ${this.task.id}`)
     const created = mountainService.insert(this.task.name)
     if (created) {
-      console.log(`Mountain created successfully, request id: ${this.task.id}`)
+      this.logger(`Mountain created successfully, request id: ${this.task.id}`)
     } else {
-      console.log(`Mountain was not created, request id: ${this.task.id}`)
+      this.logger(`Mountain was not created, request id: ${this.task.id}`)
     }
     return Promise.resolve()
   }
