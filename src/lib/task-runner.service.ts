@@ -7,7 +7,7 @@ function instanceOfCommandHandler(object: any): object is CommandHandler {
 export class TaskRunner {
   async run(handler: TaskHandler): Promise<any> {
     if (instanceOfCommandHandler(handler)) {
-      return handler.runCommand()
+      return setTimeout(() => handler.runCommand(), 0)
     } else {
       return handler.runQuery()
     }
