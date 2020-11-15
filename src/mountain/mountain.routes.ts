@@ -17,6 +17,10 @@ import {
   GetMountainQuery,
   GetMountainQueryHandler,
 } from './get-mountain-by-id.query'
+import {
+  CreateMountainCommand,
+  CreateMountainCommandHandler,
+} from './create-mountain.command'
 
 const runner = new TaskRunner()
 
@@ -60,13 +64,16 @@ export const routes = fp(
     fastify.post(
       '/mountain',
       async (request: FastifyRequest, reply: FastifyReply) => {
-        // validation and stuff
+        const requestId = uuidv4()
         const name = (request.body as any).name as string
-        const result = mountainService.insert(name)
-        if (result) {
-          reply.code(201).header('content-type', 'application/json').send()
-        }
-        reply.code(404).send()
+        const command = CreateMountainCommand(requestId, name)
+        const handler = new CreateMountainCommandHandler(command)
+
+        // mind the missing `await` here: the function won't be suspended and flow of logic would just go on
+        runner.run(handler)
+
+        // mind that the http code changed from `Created` to `Accepted`
+        reply.code(202).header('content-type', 'application/json').send()
       }
     )
 
