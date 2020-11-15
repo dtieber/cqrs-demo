@@ -7,7 +7,6 @@ import {
 } from 'fastify'
 import { v4 as uuidv4 } from 'uuid'
 
-import * as mountainService from './mountain.service'
 import {
   GetAllMountainsQuery,
   GetAllMountainsQueryHandler,
@@ -21,6 +20,10 @@ import {
   CreateMountainCommand,
   CreateMountainCommandHandler,
 } from './create-mountain.command'
+import {
+  DeleteMountainCommand,
+  DeleteMountainCommandHandler,
+} from './delete-mountain.command'
 
 const runner = new TaskRunner()
 
@@ -80,13 +83,16 @@ export const routes = fp(
     fastify.delete(
       '/mountain/:name',
       async (request: FastifyRequest, reply: FastifyReply) => {
-        // validation and stuff
+        const requestId = uuidv4()
         const name = (request.params as any).name as string
-        const result = mountainService.remove(name)
-        if (result) {
-          reply.code(200).send()
-        }
-        reply.code(404).send()
+        const command = DeleteMountainCommand(requestId, name)
+        const handler = new DeleteMountainCommandHandler(command)
+
+        // mind the missing `await` here: the function won't be suspended and flow of logic would just go on
+        runner.run(handler)
+
+        // mind that the http code changed from `Ok` to `Accepted`
+        reply.code(202).header('content-type', 'application/json').send()
       }
     )
   }
