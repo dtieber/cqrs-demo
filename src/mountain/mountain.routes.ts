@@ -8,15 +8,6 @@ import {
 import { v4 as uuidv4 } from 'uuid'
 
 import {
-  GetAllMountainsQuery,
-  GetAllMountainsQueryHandler,
-} from './get-all-mountains.query'
-import { TaskRunner } from '../lib/task-runner.service'
-import {
-  GetMountainQuery,
-  GetMountainQueryHandler,
-} from './get-mountain-by-id.query'
-import {
   CreateMountainCommand,
   CreateMountainCommandHandler,
 } from './create-mountain.command'
@@ -24,6 +15,15 @@ import {
   DeleteMountainCommand,
   DeleteMountainCommandHandler,
 } from './delete-mountain.command'
+import {
+  GetAllMountainsQuery,
+  GetAllMountainsQueryHandler,
+} from './get-all-mountains.query'
+import {
+  GetMountainQuery,
+  GetMountainQueryHandler,
+} from './get-mountain-by-id.query'
+import { TaskRunner } from '../lib/task-runner.service'
 
 const runner = new TaskRunner()
 
