@@ -13,6 +13,10 @@ import {
   GetAllMountainsQueryHandler,
 } from './get-all-mountains.query'
 import { TaskRunner } from '../lib/task-runner.service'
+import {
+  GetMountainQuery,
+  GetMountainQueryHandler,
+} from './get-mountain-by-id.query'
 
 const runner = new TaskRunner()
 
@@ -35,9 +39,14 @@ export const routes = fp(
     fastify.get(
       '/mountain/:name',
       async (request: FastifyRequest, reply: FastifyReply) => {
-        // validation and stuff
+        const requestId = uuidv4()
         const name = (request.params as any).name as string
-        const mountain = mountainService.get(name)
+        const query = GetMountainQuery(requestId, name)
+        const handler = new GetMountainQueryHandler(query)
+
+        // mind the 'await' here: the function (!) is suspended until the callback completes
+        const mountain = await runner.run(handler)
+
         if (mountain) {
           reply
             .code(201)
