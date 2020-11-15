@@ -17,6 +17,7 @@ module.exports = {
     'prettier'
   ],
   rules: {
+    'no-redeclare': 0,
     'prettier/prettier': 'error'
   }
 }
