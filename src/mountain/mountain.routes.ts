@@ -5,8 +5,13 @@ import {
   FastifyReply,
   FastifyRequest,
 } from 'fastify'
-import * as mountainService from './mountain.service'
+import { v4 as uuidv4 } from 'uuid'
 
+import * as mountainService from './mountain.service'
+import {
+  GetAllMountainsQuery,
+  GetAllMountainsQueryHandler,
+} from './get-all-mountains.query'
 import { TaskRunner } from '../lib/task-runner.service'
 
 const runner = new TaskRunner()
@@ -16,8 +21,14 @@ export const routes = fp(
     fastify.get(
       '/mountain',
       async (request: FastifyRequest, reply: FastifyReply) => {
-        // validation and stuff
-        return mountainService.getAll()
+        const requestId = uuidv4()
+        const query = GetAllMountainsQuery(requestId)
+        const getAllMountainsHandler = new GetAllMountainsQueryHandler(query)
+
+        // mind the 'await' here: the function (!) is suspended until the callback completes
+        const result = await runner.run(getAllMountainsHandler)
+
+        return result
       }
     )
 
